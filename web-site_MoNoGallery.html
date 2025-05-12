@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>MoHo Gallery – Цифровое искусство и новые медиа</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech&family=Share+Tech+Mono&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'AV Fontimer';
+      src: url('AV_Fontimer.ttf') format('truetype');
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'AV Fontimer', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    /* Общие стили */
+    .glow-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      animation: glowPulse 5s ease-in-out infinite;
+    }
+
+    .glow-overlay img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes glowPulse {
+      0% { opacity: 0.6; filter: brightness(1) saturate(1); }
+      50% { opacity: 1; filter: brightness(1.3) saturate(1.2); }
+      100% { opacity: 0.6; filter: brightness(1) saturate(1); }
+    }
+
+    /* Навигационное меню */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      z-index: 100;
+    }
+
+    .logo img {
+      height: 70px;
+    }
+
+    .nav-links a {
+      margin-left: 30px;
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #00F2FF;
+    }
+
+    /* Основные секции */
+    section {
+      min-height: 100vh;
+      width: 100%;
+      position: relative;
+      padding: 110px 0 0;
+    }
+
+    /* Главная страница */
+    #home {
+      background: linear-gradient(90deg, #e0f9ff, #ffe6f0);
+      display: flex;
+      height: 90vh;
+  max-height: 900px;
+    }
+
+    .text-section {
+      flex: 1;
+      background: #000;
+      color: white;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .text-section h1 {
+      background: #FF0088;
+      color: #111;
+      font-size: 50px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: inline-block;
+      font-family: 'Share Tech', sans-serif;
+    }
+
+    .date {
+      color: #00F2FF;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .description {
+      font-size: 18px;
+      line-height: 1.6;
+      max-width: 500px;
+    }
+
+    .pattern-divider {
+      background: url('узор.png') repeat-y;
+      width: 40px;
+      height: 100%;
+    }
+
+    .slider-section {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      width: 400%;
+      height: 100%;
+    }
+
+    .slider .slide {
+      flex: 0 0 100%;
+      height: 100%;
+    }
+
+    .slider .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      width: 70px;
+      height: 70px;
+      background-image: url('стрелка перелистывания.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 2;
+    }
+
+    .arrow.left {
+      left: 10px;
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .arrow.right {
+      right: 10px;
+    }
+
+    .ticket-button {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      background: white;
+      border: 2px solid #000;
+      padding: 15px 30px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .ticket-button:hover {
+      box-shadow: 0 0 15px #00F2FF;
+      color: #00F2FF;
+      border-color: #00F2FF;
+    }
+
+    .ticket-button:active {
+      background-color: #00F2FF;
+      color: black;
+      border-color: #00F2FF;
+    }
+
+    /* О галерее */
+    #about {
+      background: #fff;
+      display: flex;
+      height: 90vh;
+      max-height: 900px;
+    }
+
+    .about-left {
+      flex: 1;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .about-left h1 {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 48px;
+      margin-bottom: 30px;
+    }
+
+    .about-left p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+    }
+
+    .contact-item img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .about-right {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel {
+      height: 100%;
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel img {
+      min-width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 3;
+      padding: 0;
+    }
+
+    .carousel-arrow img {
+      width: 44px;
+      height: auto;
+    }
+
+    .carousel-arrow.left {
+      left: 20px;
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .carousel-arrow.right {
+      right: 20px;
+      transform: translateY(-50%);
+    }
+
+    /* Художники */
+    #artists {
+      background: linear-gradient(90deg, #e0f9ff, #ffe6f0);
+      padding-top: 140px;
+    }
+
+    .artists-header {
+      background: #000;
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    .artists-header .pattern {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+    .artists-header h1 {
+      color: white;
+      font-family: 'Share Tech', sans-serif;
+      font-size: 48px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .highlight {
+      color: #FF0088;
+    }
+
+    .artists-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 0 0 60px;
+      position: relative;
+    }
+
+    .artists-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      gap: 50px;
+    }
+
+    .artist {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .artist img.photo {
+      width: 300px;
+      height: 400px;
+      object-fit: cover;
+      border: 2px solid #000;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .artist img.photo:hover {
+      transform: scale(1.05);
+    }
+
+    #алексей-img:hover { box-shadow: 0 0 30px #00F2FF; }
+    #zero-img:hover { box-shadow: 0 0 30px #FF0088; }
+    #recycle-img:hover { box-shadow: 0 0 30px #FF0088; }
+    #варя-img:hover { box-shadow: 0 0 30px #00F2FF; }
+
+    .name-block {
+      width: 300px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      font-family: 'Share Tech', sans-serif;
+      font-size: 22px;
+      text-transform: uppercase;
+      background: #00F2FF;
+      color: #000;
+    }
+
+    .name-block.pink {
+      background: #FF0088;
+    }
+
+    .artist-arrow {
+      position: absolute;
+      top: 50%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 2;
+    }
+
+    .artist-arrow img {
+      width: 30px;
+      height: auto;
+    }
+
+    .artist-arrow.left {
+      left: -40px;
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .artist-arrow.right {
+      right: -40px;
+      transform: translateY(-50%);
+    }
+
+    /* Выставки */
+    #exhibitions {
+      background: linear-gradient(90deg, #000000, #1c1c1c);
+      color: white;
+      padding-top: 140px;
+    }
+
+    .exhibition-slide {
+      display: none;
+      height: calc(100vh - 140px);
+      width: 100%;
+    }
+
+    .exhibition-slide.active {
+      display: flex;
+    }
+
+    .exhibition-container {
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+
+    .exhibition-left, .exhibition-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .exhibition-left img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .exhibition-right {
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px;
+      text-align: left;
+    }
+
+    .exhibition-right h1 {
+      font-family: 'Share Tech', sans-serif;
+      font-size: 48px;
+      color: #00F2FF;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
+
+    .exhibition-right p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .exhibition-pattern {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+    }
+
+    .exhibition-pattern.top-right {
+      top: 20px;
+      right: 20px;
+    }
+
+    .exhibition-pattern.bottom-right {
+      bottom: 20px;
+      right: 20px;
+    }
+
+    .exhibition-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 3;
+      padding: 0;
+    }
+
+    .exhibition-arrow img {
+      width: 44px;
+      height: auto;
+    }
+
+    .exhibition-arrow.left {
+      left: 20px;
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .exhibition-arrow.right {
+      right: 20px;
+      transform: translateY(-50%);
+    }
+
+    .gallery-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 3;
+      padding: 0;
+    }
+
+    .gallery-arrow img {
+      width: 15px;
+      height: auto;
+    }
+
+    .gallery-arrow.left {
+      left: 20px;
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .gallery-arrow.right {
+      right: 20px;
+      transform: translateY(-50%);
+    }
+
+    /* Контакты */
+    #contacts {
+      background: linear-gradient(90deg, #e0f9ff, #ffe6f0);
+      color: #000;
+      padding-top: 140px;
+    }
+
+    .contacts-section {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    #contacts h1 {
+      font-family: 'Share Tech', sans-serif;
+      font-size: 48px;
+      text-transform: uppercase;
+      margin: 0 0 20px 60px;
+    }
+
+    .map-container {
+      width: 100%;
+      height: 300px;
+      background: url('карта.jpg') center/cover no-repeat;
+    }
+
+    .contact-info {
+      background: #000;
+      width: 100%;
+      padding: 40px 60px 120px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      position: relative;
+      margin: 0 auto;
+      color: white;
+    }
+
+    .contact-left, .contact-right {
+      flex: 1 1 300px;
+      margin: 10px;
+    }
+
+    .contact-left p {
+      margin: 10px 0;
+      font-size: 18px;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+    }
+
+    .contact-left p img {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+    }
+
+    .contact-right p {
+      font-size: 18px;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .contact-right p img {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+    }
+
+    .top-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .top-button img {
+      width: auto;
+      height: 25px;
+    }
+
+    .logo-image {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 100px;
+      height: auto;
+    }
+
+    a {
+      color: #00F2FF;
+      text-decoration: none;
+    }
+
+    /* Модальные окна */
+    .overlay { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center; 
+      justify-content: center; 
+      backdrop-filter: blur(2px); 
+      z-index: 10000; 
+      transition: opacity 0.4s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      width: 400px;
+      position: relative;
+      transform: scale(0.8);
+      transition: transform 0.4s ease;
+    }
+
+    .overlay.active .modal {
+      transform: scale(1);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 30px;
+      color: #00F2FF;
+      cursor: pointer;
+    }
+
+    .ticket-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ticket-form label {
+      color: #FF0088;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+
+    .ticket-form input {
+      padding: 10px;
+      background: #dcdcdc;
+      border: none;
+      font-size: 16px;
+    }
+
+    .buy-button {
+      margin-top: 30px;
+      padding: 15px;
+      background: white;
+      border: 2px solid black;
+      font-size: 23px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .buy-button:hover {
+      box-shadow: 0 0 15px #FF0088;
+      color: #FF0088;
+      border-color: #FF0088;
+    }
+
+    .buy-button:active {
+      background-color: #FF0088;
+      color: white;
+      border-color: #FF0088;
+    }
+
+    .bio-modal {
+      background: white;
+      padding: 50px 40px;
+      border-radius: 10px;
+      max-width: 500px;
+      text-align: left;
+      font-family: 'AV Fontimer', sans-serif;
+      position: relative;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .bio-modal h2 {
+      font-family: 'Share Tech', sans-serif;
+      font-size: 30px;
+      margin-bottom: 20px;
+      color: #000;
+    }
+
+    .bio-modal p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #111;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: none;
+      border: none;
+      font-size: 32px;
+      cursor: pointer;
+    }
+
+    .overlay.cyan .close-btn {
+      color: #00F2FF;
+    }
+
+    .overlay.pink .close-btn {
+      color: #FF0088;
+    }
+
+    .overlay.pink { background: rgba(255, 0, 136, 0.25); }
+    .overlay.cyan { background: rgba(0, 242, 255, 0.25); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Адаптивность */
+    @media (max-width: 1000px) {
+      .artists-wrapper {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .artists-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .artist {
+        margin: 20px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      #home, #about {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .text-section, .slider-section, 
+      .about-left, .about-right {
+        flex: none;
+        width: 100%;
+        height: 50vh;
+      }
+
+      .about-left {
+        padding: 30px;
+      }
+
+      .exhibition-container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .exhibition-left, .exhibition-right {
+        flex: none;
+        width: 100%;
+        height: 50vh;
+      }
+
+      .exhibition-right {
+        padding: 30px;
+      }
+
+      .exhibition-pattern {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #contacts h1 {
+        font-size: 36px;
+        margin-left: 30px;
+      }
+
+      .contact-info {
+        flex-direction: column;
+        padding: 20px 30px 100px;
+        width: 100%;
+      }
+
+      .logo-image {
+        width: 80px;
+      }
+
+      nav {
+        padding: 15px 20px;
+      }
+
+      .logo img {
+        height: 50px;
+      }
+
+      .nav-links a {
+        margin-left: 15px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Эффект сияния -->
+<div class="glow-overlay">
+  <img src="сияние.png" alt="Эффект сияния">
+</div>
+
+<!-- Навигационное меню -->
+<nav>
+  <div class="logo">
+    <img src="mono-logo.png" alt="MoHo Gallery">
+  </div>
+  <div class="nav-links">
+    <a href="#home">главная</a>
+    <a href="#about">о галерее</a>
+    <a href="#artists">художники</a>
+    <a href="#exhibitions">выставки</a>
+    <a href="#contacts">контакты</a>
+  </div>
+</nav>
+
+<!-- Главная страница -->
+<section id="home">
+  <div class="text-section">
+    <h1>Время движений</h1>
+    <div class="date">13.04–21.07</div>
+    <div class="description">
+      Выставка исследует застывшее движение, где всё продолжает "шуметь" изнутри.
+      Это выставка о непереваренной скорости, когда даже пауза – часть процесса.
+      Здесь каждый объект, каждая форма и каждая текстура демонстрируют, как в мире,
+      где всё движется быстрее, чем мы можем осознать.
+    </div>
+  </div>
+
+  <div class="pattern-divider"></div>
+
+  <div class="slider-section">
+    <div class="slider" id="slider">
+      <div class="slide"><img src="slide1.png" alt="Слайд 1"></div>
+      <div class="slide"><img src="slide2.png" alt="Слайд 2"></div>
+      <div class="slide"><img src="slide3.png" alt="Слайд 3"></div>
+      <div class="slide"><img src="slide4.png" alt="Слайд 4"></div>
+    </div>
+    <button class="arrow left" id="prev"></button>
+    <button class="arrow right" id="next"></button>
+    <button class="ticket-button">купить билет</button>
+  </div>
+</section>
+
+<!-- О галерее -->
+<section id="about">
+  <div class="about-left">
+    <h1>о галерее</h1>
+    <p>
+      MoHo Gallery — это пространство на стыке цифрового и физического, где исследуются границы восприятия, технологий и искусства. Галерея фокусируется на взаимодействии света, пиксельных структур, глич-арта и новых медиа.
+    </p>
+    <p>
+      Это лаборатория цифрового искусства, где творцы из разных сфер — программисты, художники, дизайнеры и инженеры — создают новые формы визуальной и интерактивной эстетики.
+    </p>
+    <p>
+      Здесь код становится полотном, алгоритмы — кистями, а данные — краской.
+    </p>
+
+    <div class="contacts">
+      <div class="contact-item">
+        <img src="mail-icon.png" alt="Email">
+        MoHoGallery@gmail.com
+      </div>
+      <div class="contact-item">
+        <img src="telegram-icon.png" alt="Telegram">
+        MoHo Gallery
+      </div>
+      <div class="contact-item">
+        <img src="vk-icon.png" alt="VK">
+        MoHo Gallery
+      </div>
+      <div class="contact-item">
+        <img src="instagram-icon.png" alt="Instagram">
+        MoHo Gallery
+      </div>
+    </div>
+  </div>
+
+  <div class="about-right">
+    <div class="carousel" id="carousel">
+      <img src="photo1.jpg" alt="Фото галереи 1">
+      <img src="photo2.jpg" alt="Фото галереи 2">
+      <img src="photo3.jpg" alt="Фото галереи 3">
+    </div>
+    <button class="carousel-arrow left" onclick="prevCarouselSlide()">
+      <img src="стрелка перелистывания.png" alt="Назад">
+    </button>
+    <button class="carousel-arrow right" onclick="nextCarouselSlide()">
+      <img src="стрелка перелистывания.png" alt="Вперед">
+    </button>
+  </div>
+</section>
+
+<!-- Художники -->
+<section id="artists">
+  <div class="artists-header">
+    <img src="узор 8.png" alt="Узор" class="pattern">
+    <h1><span class="highlight">наши</span> художники</h1>
+    <img src="узор 9.png" alt="Узор" class="pattern">
+  </div>
+
+  <div class="artists-wrapper">
+    <div class="artists-group">
+      <div class="artist">
+        <div class="name-block">Алексей Тифонов</div>
+        <div style="position: relative;">
+          <button class="artist-arrow left" onclick="prevArtist('алексей')">
+            <img src="стрелка.png" alt="Назад">
+          </button>
+          <img class="photo" id="алексей-img" src="алексей1.jpg" alt="Алексей Тифонов" onclick="openOverlay('алексей')">
+          <button class="artist-arrow right" onclick="nextArtist('алексей')">
+            <img src="стрелка.png" alt="Вперёд">
+          </button>
+        </div>
+      </div>
+      <div class="artist">
+        <div class="name-block pink">04.Zero</div>
+        <div style="position: relative;">
+          <button class="artist-arrow left" onclick="prevArtist('zero')">
+            <img src="стрелка.png" alt="Назад">
+          </button>
+          <img class="photo" id="zero-img" src="04zero1.jpg" alt="04.Zero" onclick="openOverlay('zero')">
+          <button class="artist-arrow right" onclick="nextArtist('zero')">
+            <img src="стрелка.png" alt="Вперёд">
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="artists-group">
+      <div class="artist">
+        <div class="name-block pink">Recycle Group</div>
+        <div style="position: relative;">
+          <button class="artist-arrow left" onclick="prevArtist('recycle')">
+            <img src="стрелка.png" alt="Назад">
+          </button>
+          <img class="photo" id="recycle-img" src="recycle1.jpg" alt="Recycle Group" onclick="openOverlay('recycle')">
+          <button class="artist-arrow right" onclick="nextArtist('recycle')">
+            <img src="стрелка.png" alt="Вперёд">
+          </button>
+        </div>
+      </div>
+      <div class="artist">
+        <div class="name-block">Варя Щука</div>
+        <div style="position: relative;">
+          <button class="artist-arrow left" onclick="prevArtist('варя')">
+            <img src="стрелка.png" alt="Назад">
+          </button>
+          <img class="photo" id="варя-img" src="варя1.jpg" alt="Варя Щука" onclick="openOverlay('варя')">
+          <button class="artist-arrow right" onclick="nextArtist('варя')">
+            <img src="стрелка.png" alt="Вперёд">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="bio-overlay" class="overlay">
+    <div class="bio-modal" id="bio-content"></div>
+  </div>
+</section>
+
+<!-- Выставки -->
+<section id="exhibitions">
+  <!-- Выставка 1 -->
+  <div class="exhibition-slide active">
+    <div class="exhibition-container">
+      <div class="exhibition-left">
+        <img src="фото1.jpg" alt="H.O.H.E." class="gallery-image" data-slide="0">
+        <button class="gallery-arrow left" onclick="prevGalleryImage(0)">
+          <img src="стрелка перелистывания.png" alt="Назад">
+        </button>
+        <button class="gallery-arrow right" onclick="nextGalleryImage(0)">
+          <img src="стрелка перелистывания.png" alt="Вперед">
+        </button>
+      </div>
+      <div class="exhibition-right">
+        <h1>H.O.H.E.</h1>
+        <p>
+          Художники исследуют влияние технологий на общество и сингулярность. Курцвейл определяет её как слияние людей, машин и ИИ для достижения сверхинтеллекта. 
+          Художники поднимают вопросы: могут ли машины чувствовать, управлять миром и как изменятся их отношения с людьми.<br><br>
+          Выставка интерактивна: с приложением Recycle зритель видит больше, а без него — остаются скрытые элементы, подчёркивая зависимость общества от технологий.
+        </p>
+        <img src="pattern.png" class="exhibition-pattern top-right" alt="Узор">
+        <img src="pattern2.png" class="exhibition-pattern bottom-right" alt="Узор">
+      </div>
+    </div>
+  </div>
+
+  <!-- Выставка 2 -->
+  <div class="exhibition-slide">
+    <div class="exhibition-container">
+      <div class="exhibition-left">
+        <img src="Разумныј1.jpg" alt="Разумный" class="gallery-image" data-slide="1">
+        <button class="gallery-arrow left" onclick="prevGalleryImage(1)">
+          <img src="стрелка перелистывания.png" alt="Назад">
+        </button>
+        <button class="gallery-arrow right" onclick="nextGalleryImage(1)">
+          <img src="стрелка перелистывания.png" alt="Вперед">
+        </button>
+      </div>
+      <div class="exhibition-right">
+        <h1>Разумный</h1>
+        <p>
+          На выставке "Разумный" художники представляют утопию, упровляемую ИИ с открытым кодом, объединяющим волю живых и бюрократические решения. Этот алгоритм заменяет традиционное правительство, предлагая прозрачную демократию, поддерживаемую посмертными данными и загрузкой сознания. Пространство выставки лишино символов власти, воплощая идеалы утопии.
+        </p>
+        <img src="pattern.png" class="exhibition-pattern top-right" alt="Узор">
+        <img src="pattern2.png" class="exhibition-pattern bottom-right" alt="Узор">
+      </div>
+    </div>
+  </div>
+
+  <!-- Выставка 3 -->
+  <div class="exhibition-slide">
+    <div class="exhibition-container">
+      <div class="exhibition-left">
+        <img src="Dream1.jpg" alt="Dreamology" class="gallery-image" data-slide="2">
+        <button class="gallery-arrow left" onclick="prevGalleryImage(2)">
+          <img src="стрелка перелистывания.png" alt="Назад">
+        </button>
+        <button class="gallery-arrow right" onclick="nextGalleryImage(2)">
+          <img src="стрелка перелистывания.png" alt="Вперед">
+        </button>
+      </div>
+      <div class="exhibition-right">
+        <h1>Dreamology</h1>
+        <p>
+          Dreamology - это танцевальный перформанс, где пересекаются два мира - виртуальность и реальность. Представление проходило в физическом мире, а движения танцора через датчики передавались в Метавселенную на платформе VRChat. За спектаклем наблюдали офлайн зрители, пришедшие в здание галереи и онлайн - те, что присоединились к постановке через компьютер или шлем.
+        </p>
+        <img src="pattern.png" class="exhibition-pattern top-right" alt="Узор">
+        <img src="pattern2.png" class="exhibition-pattern bottom-right" alt="Узор">
+      </div>
+    </div>
+  </div>
+
+  <!-- Стрелки переключения выставок -->
+  <button class="exhibition-arrow left" onclick="prevExhibitionSlide()">
+    <img src="стрелка перелистывания.png" alt="Назад">
+  </button>
+  <button class="exhibition-arrow right" onclick="nextExhibitionSlide()">
+    <img src="стрелка перелистывания.png" alt="Вперед">
+  </button>
+</section>
+
+<!-- Контакты -->
+<section id="contacts">
+  <div class="contacts-section">
+    <h1>Контакты</h1>
+
+    <div class="map-container"></div>
+
+    <div class="contact-info">
+      <div class="contact-left">
+        <p><img src="адрес.png" alt="Адрес"> Санкт-Петербург, Московский проспект, 41</p>
+        <p>Режим работы 13:00–22:00</p>
+        <p> </p>
+        <p> </p>
+        <p> </p>
+        <p> </p>
+        <p> </p>
+        <p> </p>
+        <p> </p>
+        <p><img src="mail.png" alt="Почта"> MoHoGallery@gmail.com</p>
+        <p>Тел. для связи: +7 (936) 344-05-06</p>
+      </div>
+
+      <div class="contact-right">
+        <p><img src="тг.png" alt="Telegram"> MoHo Gallery</p>
+        <p><img src="вк.png" alt="VK"> MoHo Gallery</p>
+        <p><img src="инст.png" alt="Instagram"> MoHo Gallery</p>
+      </div>
+
+      <img src="mono-logo.png" alt="Логотип MoHo Gallery" class="logo-image">
+    </div>
+  </div>
+
+  <button class="top-button" onclick="window.scrollTo({top:0, behavior:'smooth'});">
+    <img src="стрелка вверх.png" alt="Наверх">
+  </button>
+</section>
+
+<!-- Окно покупки билета -->
+<div id="overlay" class="overlay">
+  <div class="modal">
+    <button class="close-modal">&times;</button>
+    <form class="ticket-form">
+      <label>Фамилия Имя*</label>
+      <input type="text" required>
+      <label>E-mail*</label>
+      <input type="email" required>
+      <label>Телефон*</label>
+      <input type="tel" required>
+      <label>Билетов:</label>
+      <input type="number" min="1" value="1">
+      <button type="submit" class="buy-button">купить 700 ₽</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Главный слайдер
+  const slider = document.getElementById('slider');
+  const next = document.getElementById('next');
+  const prev = document.getElementById('prev');
+  let index = 0;
+
+  next.addEventListener('click', () => {
+    index = (index + 1) % 4;
+    slider.style.transform = `translateX(-${index * 100}%)`;
+  });
+
+  prev.addEventListener('click', () => {
+    index = (index - 1 + 4) % 4;
+    slider.style.transform = `translateX(-${index * 100}%)`;
+  });
+
+  // Карусель в разделе "О галерее"
+  let currentCarouselSlide = 0;
+  const carousel = document.getElementById('carousel');
+  const totalCarouselSlides = carousel ? carousel.children.length : 0;
+
+  function nextCarouselSlide() {
+    currentCarouselSlide = (currentCarouselSlide + 1) % totalCarouselSlides;
+    carousel.style.transform = `translateX(-${currentCarouselSlide * 100}%)`;
+  }
+
+  function prevCarouselSlide() {
+    currentCarouselSlide = (currentCarouselSlide - 1 + totalCarouselSlides) % totalCarouselSlides;
+    carousel.style.transform = `translateX(-${currentCarouselSlide * 100}%)`;
+  }
+
+  // Художники
+  const artists = {
+    'алексей': ['алексей1.jpg', 'алексей2.jpg', 'алексей3.jpg'],
+    'zero': ['04zero1.jpg', '04zero2.jpg', '04zero3.jpg', '04zero4.jpg'],
+    'recycle': ['recycle1.jpg', 'recycle2.jpg', 'recycle3.jpg'],
+    'варя': ['варя1.jpg', 'варя2.jpg', 'варя3.jpg', 'варя4.jpg']
+  };
+
+  const bios = {
+    'алексей': {
+      content: "<button class='close-btn' onclick='closeOverlay()'>×</button><h2>Алексей Тифонов</h2><p>Художник новых медиа. С середины 1990-х интересуется вопросами машинной генерации, автор экспериментов по генерации текстов, музыки и изображений. Автор создаёт короткие анимации в стиле пиксель-арт, беря за основу такие эффекты как бесконечная панорама, фрактальная детализация или параллакс. Визуальность проекта отсылает к эстетике ранних компьютерных игр.</p>",
+      theme: 'cyan'
+    },
+    'zero': {
+      content: "<button class='close-btn' onclick='closeOverlay()'>×</button><h2>04.Zero</h2><p>Дуэт двух художников из Санкт-Петербурга, Кристины Карпышевой и Александра Лециуса, который экспериментирует в широком наборе жанров от видео-арта и музыки до уникальных светозвуковых инсталляций.Генеративное искусство 404.zero сочетает в себе красоту математики, программирования и науки о звуке.</p>",
+      theme: 'pink'
+    },
+    'recycle': {
+      content: "<button class='close-btn' onclick='closeOverlay()'>×</button><h2>Recycle Group</h2><p>Основана Андреем Блохиным и Георгием Кузнецовым в 2008 году. Знамениты своим синтезом технологий и истории искусства с фокусом на античных цивилизациях. Художники часто используют в работе технологию дополненной реальности (AR), интегрируя цифровые технологии и физические объекты искусства, преимущественно скульптуры.</p>",
+      theme: 'pink'
+    },
+    'варя': {
+      content: "<button class='close-btn' onclick='closeOverlay()'>×</button><h2>Варя Щука</h2><p>Художница из Москвы, работающая в различных медиа, от 3D до скульптуры. Её работы апеллируют к простым, знакомым каждому символам и образам. Одним из центральных образов её визуального словаря является детство.</p>",
+      theme: 'cyan'
+    }
+  };
+
+  const indexes = { 'алексей': 0, 'zero': 0, 'recycle': 0, 'варя': 0 };
+
+  function nextArtist(name) {
+    indexes[name] = (indexes[name] + 1) % artists[name].length;
+    document.getElementById(name + '-img').src = artists[name][indexes[name]];
+  }
+
+  function prevArtist(name) {
+    indexes[name] = (indexes[name] - 1 + artists[name].length) % artists[name].length;
+    document.getElementById(name + '-img').src = artists[name][indexes[name]];
+  }
+
+  function openOverlay(name) {
+    const overlay = document.getElementById('bio-overlay');
+    const content = document.getElementById('bio-content');
+    overlay.className = 'overlay active ' + bios[name].theme;
+    content.innerHTML = bios[name].content;
+  }
+
+  function closeOverlay() {
+    const overlay = document.getElementById('bio-overlay');
+    overlay.className = 'overlay';
+    document.getElementById('bio-content').innerHTML = '';
+  }
+
+  // Выставки
+  const slideImages = [
+    ['фото1.jpg', 'фото2.jpg', 'фото3.jpg', 'фото4.jpg'],
+    ['Разумныј1.jpg', 'Разумныј2.jpg', 'Разумныј3.jpg', 'Разумныј4.jpg'],
+    ['Dream1.jpg', 'Dream2.jpg', 'Dream3.jpg', 'Dream4.jpg']
+  ];
+
+  let currentImageIndices = [0, 0, 0];
+
+  function updateGalleryImage(slideIndex) {
+    const imgElement = document.querySelector(`.gallery-image[data-slide="${slideIndex}"]`);
+    if (imgElement) {
+      imgElement.src = slideImages[slideIndex][currentImageIndices[slideIndex]];
+    }
+  }
+
+  function nextGalleryImage(slideIndex) {
+    currentImageIndices[slideIndex] = (currentImageIndices[slideIndex] + 1) % slideImages[slideIndex].length;
+    updateGalleryImage(slideIndex);
+  }
+
+  function prevGalleryImage(slideIndex) {
+    currentImageIndices[slideIndex] = (currentImageIndices[slideIndex] - 1 + slideImages[slideIndex].length) % slideImages[slideIndex].length;
+    updateGalleryImage(slideIndex);
+  }
+
+  const exhibitionSlides = document.querySelectorAll('#exhibitions .exhibition-slide');
+  let currentExhibitionSlide = 0;
+
+  function showExhibitionSlide(index) {
+    exhibitionSlides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+
+  function nextExhibitionSlide() {
+    currentExhibitionSlide = (currentExhibitionSlide + 1) % exhibitionSlides.length;
+    showExhibitionSlide(currentExhibitionSlide);
+  }
+
+  function prevExhibitionSlide() {
+    currentExhibitionSlide = (currentExhibitionSlide - 1 + exhibitionSlides.length) % exhibitionSlides.length;
+    showExhibitionSlide(currentExhibitionSlide);
+  }
+
+  // Модальное окно покупки билетов
+  const ticketButton = document.querySelector('.ticket-button');
+  const overlay = document.getElementById('overlay');
+  const closeModal = document.querySelector('.close-modal');
+
+  ticketButton.addEventListener('click', () => {
+    overlay.classList.add('active');
+  });
+
+  closeModal.addEventListener('click', () => {
+    overlay.classList.remove('active');
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.classList.remove('active');
+    }
+  });
+</script>
+</body>
+</html>
